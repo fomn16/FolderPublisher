@@ -1,12 +1,11 @@
-use tauri_plugin_sql::{Migration, MigrationKind};  
+use tauri_plugin_sql::{Migration, MigrationKind};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let migrations = vec![  
-        Migration {  
-            version: 1,  
-            description: "create tables",  
-            sql: "  
+    let migrations = vec![Migration {
+        version: 1,
+        description: "create tables",
+        sql: "  
                 CREATE TABLE projects (
                     id	INTEGER NOT NULL UNIQUE,
                     name	TEXT NOT NULL UNIQUE,
@@ -22,15 +21,17 @@ pub fn run() {
                     PRIMARY KEY(id AUTOINCREMENT),
                     CONSTRAINT FK_IgnoredFile_Project FOREIGN KEY(projectId) REFERENCES projects(id)
                 );
-            ",  
-            kind: MigrationKind::Up,  
-        }  
-    ]; 
-    
+            ",
+        kind: MigrationKind::Up,
+    }];
+
     tauri::Builder::default()
-        .plugin(tauri_plugin_sql::Builder::new()
-            .add_migrations("sqlite:ANTTPublisher.db", migrations)
-            .build())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(
+            tauri_plugin_sql::Builder::new()
+                .add_migrations("sqlite:ANTTPublisher.db", migrations)
+                .build(),
+        )
         .plugin(tauri_plugin_opener::init())
         //.invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())

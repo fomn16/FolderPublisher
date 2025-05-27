@@ -1,0 +1,8 @@
+.trashButton{
+    background: none;
+    aspect-ratio: 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
