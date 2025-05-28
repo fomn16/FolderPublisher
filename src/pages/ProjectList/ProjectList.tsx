@@ -1,10 +1,12 @@
-import { IoMdTrash } from "react-icons/io";
+import { IoMdTrash, IoMdPlay } from "react-icons/io";
+import { MdCancel } from "react-icons/md";
+
 import "./ProjectList.css";
 import Database from "@tauri-apps/plugin-sql";
 import { Dispatch, useEffect, useState } from "react";
-import { MdCancel } from "react-icons/md";
 import InputWithButtons from "../../components/InputWithButtons";
 import levenshtein from 'js-levenshtein';
+import { invoke } from "@tauri-apps/api/core";
 
 interface Props{
     isLoadingProjects: boolean
@@ -22,7 +24,6 @@ export default function ProjectList(props:Props){
         setIsLoadingProjects(true);
         const db = await Database.load("sqlite:ANTTPublisher.db");
         await db.execute("delete from projects where id = $1", [id]);
-
         await getProjects();
       }
       catch (error){
@@ -32,6 +33,17 @@ export default function ProjectList(props:Props){
       }
     }
 
+    const copyTo = async (src: string, dst: string) => {
+      try {
+        await invoke('copy_directory', {
+          sourceDir: src,
+          destinationDir: dst
+        });
+      } catch (error) {
+        console.log(error);
+        setError('erro ao copiar arquivos')
+      }
+    }
 
     const [filter, setFilter] = useState<string>("");
     const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
@@ -51,6 +63,10 @@ export default function ProjectList(props:Props){
     }
 
     useEffect(()=>{ applyFilter() }, [filter, projects]);
+
+    const processFilePath = (filePath:string) => {
+      return filePath.replace(/[\/\\]/g, (match) => match + '\u200b');
+    };
 
     return isLoadingProjects ? (
         <div>Carregando projetos...</div>
@@ -79,10 +95,11 @@ export default function ProjectList(props:Props){
             {filteredProjects.map((project) => (
               <tr key={project.id}>
                 <td>{project.name}</td>
-                <td>{project.filesFrom}</td>
-                <td>{project.filesTo}</td>
+                <td>{processFilePath(project.filesFrom)}</td>
+                <td>{processFilePath(project.filesTo)}</td>
                 <td>
                     <button className="trashButton" onClick={() => handleDelete(project.id)}><IoMdTrash/></button>
+                    <button className="trashButton" onClick={() => copyTo(project.filesFrom, project.filesTo)}><IoMdPlay/></button>
                 </td>
               </tr>
             ))}

@@ -6,3 +6,34 @@
     align-items: center;
     padding: 0;
 }
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Nome */
+  td:nth-child(1),
+  th:nth-child(1) {
+    width: 15%;
+  }
+  
+  /* Ações */
+  td:last-child,
+  th:last-child {
+    width: 10%;
+    white-space: nowrap;
+  }
+  
+  td:last-child button {
+    margin-right: 4px;
+  }

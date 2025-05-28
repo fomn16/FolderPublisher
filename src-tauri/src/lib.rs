@@ -1,4 +1,13 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
+use dircpy::copy_dir;
+
+#[tauri::command]
+async fn copy_directory(source_dir: String, destination_dir: String) -> Result<(), String> {
+    match copy_dir(&source_dir, &destination_dir) {
+        Ok(_) => Ok(()),
+        Err(e) => Err(format!("Failed to copy directory: {}", e)),
+    }
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -33,7 +42,7 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_opener::init())
-        //.invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![copy_directory])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -25,4 +25,5 @@ serde_json = "1"
 env = "1.0.1"
 tauri-plugin-sql = { version = "2", features = ["sqlite"] }
 tauri-plugin-dialog = "2"
+dircpy = "0.3.19"
 
