@@ -1,9 +1,10 @@
-import { Dispatch } from "react"
+import { Dispatch, RefObject } from "react"
 import { IconType } from "react-icons"
 
 interface ButtonInfo{
-    onClick: () => Promise<void>
+    onClick?: () => void| Promise<void>
     icon: IconType
+    ref?: RefObject<HTMLButtonElement>
 }
 
 interface Props{
@@ -44,8 +45,9 @@ export default function InputWithButtons(props:Props){
                         border: 'none',
                         backgroundColor: 'transparent',
                         cursor: 'pointer',
-                        padding: '0 10px'
+                        padding: '0 10px',
                         }}
+                        ref={button.ref}
                         ><button.icon/></button>);
             })}
             </div>

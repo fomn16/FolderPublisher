@@ -5,12 +5,13 @@ import FolderSelector from "../components/FolderSelector";
 interface Props{
     setIsLoadingProjects: Dispatch<boolean>,
     getProjects: ()=>Promise<void>,
-    setError:Dispatch<string>
+    setError:Dispatch<string>,
+    onSubmitAlso: ()=>void
 }
 
 export default function ProjectForm(props:Props){
     
-    const {setIsLoadingProjects, getProjects, setError} = props
+    const {setIsLoadingProjects, getProjects, setError, onSubmitAlso} = props
     const [name, setName] = useState<string>("");
     const [filesFrom, setFilesFrom] = useState<string>("");
     const [filesTo, setFilesTo] = useState<string>("");
@@ -49,12 +50,13 @@ export default function ProjectForm(props:Props){
             setFilesFrom("");
             setFilesTo("");
         }
+        onSubmitAlso();
     }
 
     return (<form
     className="row"
     onSubmit={onSubmit}
-    style={{maxWidth:"600px"}}
+    style={{maxWidth:"600px", minWidth:'350px'}}
     >
         <div className="collumns">
             <input
@@ -74,7 +76,7 @@ export default function ProjectForm(props:Props){
             value={filesTo}
             setValue={setFilesTo}
             />
-            <button type="submit" style={{maxWidth:"300px"}}>Adicionar Projeto</button>
+            <button type="submit" style={{maxWidth:"300px", marginTop:"50px"}}>Adicionar Projeto</button>
         </div>
     </form>)
 }

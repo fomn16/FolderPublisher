@@ -1,5 +1,5 @@
 import { IoMdTrash, IoMdPlay } from "react-icons/io";
-import { MdCancel } from "react-icons/md";
+import { MdAdd, MdCancel } from "react-icons/md";
 
 import "./ProjectList.css";
 import Database from "@tauri-apps/plugin-sql";
@@ -14,10 +14,18 @@ interface Props{
     setError: Dispatch<string>
     getProjects: ()=>Promise<void>,
     setIsLoadingProjects: Dispatch<boolean>
+    onOpenCreate: ()=>void
 }
 
 export default function ProjectList(props:Props){
-    const {isLoadingProjects, projects, setError, getProjects, setIsLoadingProjects} = props;
+    const {
+      isLoadingProjects,
+      projects,
+      setError,
+      getProjects,
+      setIsLoadingProjects,
+      onOpenCreate
+    } = props;
 
     const handleDelete = async (id:number) =>{
       try{
@@ -72,7 +80,6 @@ export default function ProjectList(props:Props){
         <div>Carregando projetos...</div>
     ) : (
       <div className="collumns">
-        <h1>Projetos</h1>
           <InputWithButtons
             id="projectsFilter"
             value={filter}
@@ -81,6 +88,9 @@ export default function ProjectList(props:Props){
             buttons={[{
               onClick:onClearFilter,
               icon:MdCancel
+            },{
+              onClick:onOpenCreate,
+              icon:MdAdd
             }]}/>
         <table>
           <thead>

@@ -71,3 +71,14 @@ button:active {
   width: 100%;
   box-sizing: border-box;
 }
+
+.rows {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 1rem;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}

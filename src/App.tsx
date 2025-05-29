@@ -7,11 +7,16 @@ import Database from "@tauri-apps/plugin-sql";
 import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 import ProjectList from "./pages/ProjectList/ProjectList";
+import AnimatedCard from "./components/AnimatedCard/AnimatedCard";
 
 function App() {
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
   const [projects, setProjects] = useState<Project[]>([]);
   const [error, setError] = useState<string>("");
+
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const onOpenCreate=()=>{setCreateModalOpen(true)}
+  const onCloseCreate=()=>{setCreateModalOpen(false)}
 
   async function getProjects() {
     try {
@@ -44,22 +49,24 @@ function App() {
     }
   }, [error]);
 
-
   return (
     <main className="container">
       <ToastContainer/>
-
       <div className="collumns">
-        <ProjectForm
-          setIsLoadingProjects={setIsLoadingProjects}
-          getProjects={getProjects}
-          setError={setError}/>
+        <AnimatedCard isOpen={createModalOpen} setIsOpen={setCreateModalOpen} >
+          <ProjectForm
+            setIsLoadingProjects={setIsLoadingProjects}
+            getProjects={getProjects}
+            setError={setError}
+            onSubmitAlso={onCloseCreate}/>
+        </AnimatedCard>
         <ProjectList
           isLoadingProjects={isLoadingProjects}
           projects={projects}
           setError={setError}
           getProjects={getProjects}
-          setIsLoadingProjects={setIsLoadingProjects}/>
+          setIsLoadingProjects={setIsLoadingProjects}
+          onOpenCreate={onOpenCreate}/>
       </div>
     </main>
   );
