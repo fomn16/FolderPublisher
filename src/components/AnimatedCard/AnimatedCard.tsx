@@ -1,24 +1,21 @@
-import { ReactNode, Dispatch } from 'react';
+import { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Modal from 'react-modal';
 import './AnimatedCard.css';
 import { MdClose } from 'react-icons/md';
+import { ActiveModal, useAppStateStore } from '../../stores';
 
 Modal.setAppElement('#root');
 
 interface Props{
-    isOpen: boolean
-    setIsOpen: Dispatch<boolean>
+    type: ActiveModal
     children: ReactNode
 }
 
 const AnimatedCard = (props: Props) => {
-  const { isOpen, setIsOpen, children } = props
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
+  const { type, children } = props
+  const { closeModal, activeModal} = useAppStateStore()
+  const isOpen = activeModal === type
   return (
     <AnimatePresence>
     {isOpen && (

@@ -1,41 +1,19 @@
-import { Dispatch, FormEvent, useState } from "react";
-import Database from "@tauri-apps/plugin-sql";
+import { FormEvent, useState } from "react";
 import FolderSelector from "../components/FolderSelector";
 
-interface Props{
-    setIsLoadingProjects: Dispatch<boolean>,
-    getProjects: ()=>Promise<void>,
-    setError:Dispatch<string>,
-    onSubmitAlso: ()=>void
-}
+import { useAppStateStore, useProjectsStore } from "../stores";
 
-export default function ProjectForm(props:Props){
-    
-    const {setIsLoadingProjects, getProjects, setError, onSubmitAlso} = props
+export default function ProjectForm(){
     const [name, setName] = useState<string>("");
     const [filesFrom, setFilesFrom] = useState<string>("");
     const [filesTo, setFilesTo] = useState<string>("");
-    
-    async function setProject(project: Omit<Project, "id">) {
-        try {
-            setIsLoadingProjects(true);
-            const db = await Database.load("sqlite:folder_publisher.db");
-            await db.execute("INSERT INTO projects (name, filesFrom, filesTo) VALUES ($1, $2, $3)", [
-            project.name,
-            project.filesFrom,
-            project.filesTo
-            ]);
-            await getProjects();
-        } catch (error) {
-            console.log(error);
-            setError("Falha ao inserir projeto");
-            setIsLoadingProjects(false);
-        }
-    }
+
+    const {notifyError, closeModal} = useAppStateStore()
+    const {createProject} = useProjectsStore();
 
     function valid(){
         if(name.length==0 || filesFrom?.length==0 || filesTo?.length==0){
-            setError("Parâmetros inválidos");
+            notifyError("Parâmetros inválidos");
             return false;
         }
         return true;
@@ -45,12 +23,12 @@ export default function ProjectForm(props:Props){
         console.log(filesFrom, filesTo)
         e.preventDefault();
         if(valid() && filesFrom && filesTo){
-            await setProject({ name, filesFrom, filesTo });
+            await createProject({ name, filesFrom, filesTo });
             setName("");
             setFilesFrom("");
             setFilesTo("");
         }
-        onSubmitAlso();
+        closeModal();
     }
 
     return (<form

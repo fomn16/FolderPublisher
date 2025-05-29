@@ -2,44 +2,19 @@ import { IoMdTrash, IoMdPlay } from "react-icons/io";
 import { MdAdd, MdCancel } from "react-icons/md";
 
 import "./ProjectList.css";
-import Database from "@tauri-apps/plugin-sql";
-import { Dispatch, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InputWithButtons from "../../components/InputWithButtons";
 import levenshtein from 'js-levenshtein';
 import { invoke } from "@tauri-apps/api/core";
 
-interface Props{
-    isLoadingProjects: boolean
-    projects: Project[]
-    setError: Dispatch<string>
-    getProjects: ()=>Promise<void>,
-    setIsLoadingProjects: Dispatch<boolean>
-    onOpenCreate: ()=>void
-}
+import { useAppStateStore, useProjectsStore } from "../../stores";
 
-export default function ProjectList(props:Props){
-    const {
-      isLoadingProjects,
-      projects,
-      setError,
-      getProjects,
-      setIsLoadingProjects,
-      onOpenCreate
-    } = props;
+export default function ProjectList(){
 
-    const handleDelete = async (id:number) =>{
-      try{
-        setIsLoadingProjects(true);
-        const db = await Database.load("sqlite:folder_publisher.db");
-        await db.execute("delete from projects where id = $1", [id]);
-        await getProjects();
-      }
-      catch (error){
-        console.log(error);
-        setError("Erro ao excluir projeto");
-        setIsLoadingProjects(false);
-      }
-    }
+    const { notifyError, isLoading, setActiveModal} = useAppStateStore()
+    const { projects, deleteProject } = useProjectsStore();
+    const [filter, setFilter] = useState<string>("");
+    const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
     const copyTo = async (src: string, dst: string) => {
       try {
@@ -49,15 +24,14 @@ export default function ProjectList(props:Props){
         });
       } catch (error) {
         console.log(error);
-        setError('erro ao copiar arquivos')
+        notifyError('erro ao copiar arquivos')
       }
     }
-
-    const [filter, setFilter] = useState<string>("");
-    const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+    
     const onClearFilter = async () => {
       setFilter("");
     }
+
     const applyFilter = async ()=>{
       if(filter!==""){
         setFilteredProjects(
@@ -76,7 +50,7 @@ export default function ProjectList(props:Props){
       return filePath.replace(/[\/\\]/g, (match) => match + '\u200b');
     };
 
-    return isLoadingProjects ? (
+    return isLoading ? (
         <div>Carregando projetos...</div>
     ) : (
       <div className="collumns">
@@ -89,7 +63,7 @@ export default function ProjectList(props:Props){
               onClick:onClearFilter,
               icon:MdCancel
             },{
-              onClick:onOpenCreate,
+              onClick: () => setActiveModal("CreateProject"),
               icon:MdAdd
             }]}/>
         <table>
@@ -109,7 +83,7 @@ export default function ProjectList(props:Props){
                 <td>{processFilePath(project.filesTo)}</td>
                 <td>
                   <div className="list-buttons">
-                    <button className="icon-button list-button" onClick={() => handleDelete(project.id)}><IoMdTrash/></button>
+                    <button className="icon-button list-button" onClick={() => deleteProject(project.id)}><IoMdTrash/></button>
                     <button className="icon-button list-button" onClick={() => copyTo(project.filesFrom, project.filesTo)}><IoMdPlay/></button>
                   </div>
                 </td>
