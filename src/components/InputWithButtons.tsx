@@ -38,6 +38,7 @@ export default function InputWithButtons(props:Props){
             {buttons.map((button, index) => {
                 return(
                     <button
+                        className="icon-button"
                         type="button"
                         id={id + "-" + index.toString()}
                         onClick={button.onClick}

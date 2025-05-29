@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "anttpublisher",
+  "productName": "folder_publisher",
   "version": "0.1.0",
-  "identifier": "com.anttpublisher.app",
+  "identifier": "com.folder_publisher.app",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "anttpublisher",
+        "title": "folder_publisher",
         "width": 800,
         "height": 600
       }

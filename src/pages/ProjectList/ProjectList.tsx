@@ -30,7 +30,7 @@ export default function ProjectList(props:Props){
     const handleDelete = async (id:number) =>{
       try{
         setIsLoadingProjects(true);
-        const db = await Database.load("sqlite:ANTTPublisher.db");
+        const db = await Database.load("sqlite:folder_publisher.db");
         await db.execute("delete from projects where id = $1", [id]);
         await getProjects();
       }
@@ -108,8 +108,10 @@ export default function ProjectList(props:Props){
                 <td>{processFilePath(project.filesFrom)}</td>
                 <td>{processFilePath(project.filesTo)}</td>
                 <td>
-                    <button className="trashButton" onClick={() => handleDelete(project.id)}><IoMdTrash/></button>
-                    <button className="trashButton" onClick={() => copyTo(project.filesFrom, project.filesTo)}><IoMdPlay/></button>
+                  <div className="list-buttons">
+                    <button className="icon-button list-button" onClick={() => handleDelete(project.id)}><IoMdTrash/></button>
+                    <button className="icon-button list-button" onClick={() => copyTo(project.filesFrom, project.filesTo)}><IoMdPlay/></button>
+                  </div>
                 </td>
               </tr>
             ))}

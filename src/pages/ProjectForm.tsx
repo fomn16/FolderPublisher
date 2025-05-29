@@ -19,7 +19,7 @@ export default function ProjectForm(props:Props){
     async function setProject(project: Omit<Project, "id">) {
         try {
             setIsLoadingProjects(true);
-            const db = await Database.load("sqlite:ANTTPublisher.db");
+            const db = await Database.load("sqlite:folder_publisher.db");
             await db.execute("INSERT INTO projects (name, filesFrom, filesTo) VALUES ($1, $2, $3)", [
             project.name,
             project.filesFrom,

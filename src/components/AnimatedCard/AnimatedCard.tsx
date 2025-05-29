@@ -56,7 +56,7 @@ const AnimatedCard = (props: Props) => {
             }}
             transition={{ duration: 0.2 }}
             >
-        <button className='icon-button' onClick={closeModal}><MdClose/></button>
+        <button className='icon-button top-right' onClick={closeModal}><MdClose/></button>
         {children}
         </motion.div>
         </Modal>

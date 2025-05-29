@@ -21,7 +21,7 @@ function App() {
   async function getProjects() {
     try {
       setIsLoadingProjects(true);
-      const db = await Database.load("sqlite:ANTTPublisher.db");
+      const db = await Database.load("sqlite:folder_publisher.db");
       const dbProjects = await db.select<Project[]>("SELECT * FROM projects");
       setProjects(dbProjects);
     } catch (error) {

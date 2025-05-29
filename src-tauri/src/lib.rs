@@ -38,7 +38,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(
             tauri_plugin_sql::Builder::new()
-                .add_migrations("sqlite:ANTTPublisher.db", migrations)
+                .add_migrations("sqlite:folder_publisher.db", migrations)
                 .build(),
         )
         .plugin(tauri_plugin_opener::init())
