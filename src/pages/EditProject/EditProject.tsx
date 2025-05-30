@@ -1,3 +1,6 @@
+import { useAppStateStore } from "../../stores"
+
 export default function EditProject(){
-    return (<h1>teste</h1>)
+    const { modalProps } = useAppStateStore();
+    return (<h1>teste {modalProps}</h1>);
 }

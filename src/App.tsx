@@ -9,6 +9,7 @@ import ProjectList from "./pages/ProjectList/ProjectList";
 import AnimatedCard from "./components/AnimatedCard/AnimatedCard";
 
 import { useProjectsStore } from "./stores";
+import EditProject from "./pages/EditProject/EditProject";
 
 function App() {
   const { fetchProjects } = useProjectsStore();
@@ -21,10 +22,9 @@ function App() {
     <main className="container">
       <ToastContainer/>
       <div className="collumns">
-        <AnimatedCard type="CreateProject">
-          <ProjectForm/>
-        </AnimatedCard>
         <ProjectList/>
+        <AnimatedCard type="CreateProject"><ProjectForm/></AnimatedCard>
+        <AnimatedCard type="EditProject"><EditProject/></AnimatedCard>
       </div>
     </main>
   );

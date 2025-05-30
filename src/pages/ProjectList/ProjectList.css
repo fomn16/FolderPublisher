@@ -37,12 +37,8 @@ th:nth-child(1) {
 /* Ações */
 td:last-child,
 th:last-child {
-  width: 10%;
+  width: 15%;
   text-align: center;
-}
-
-td:last-child button {
-  margin-right: 4px;
 }
 
 td:last-child, th:last-child {

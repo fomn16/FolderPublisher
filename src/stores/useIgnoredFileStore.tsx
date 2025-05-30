@@ -2,33 +2,33 @@ import { create } from "zustand";
 import { useAppStateStore } from "./index"
 import Database from "@tauri-apps/plugin-sql";
 
-type ProjectsStore = {
-    projects: Project[],
-    fetchProjects: ()=> Promise<void>,
-    createProject: (project:Omit<Project, "id">) => Promise<void>
-    deleteProject: (id: number) => Promise<void>
+type IgnoredFilesStore = {
+    files: IgnoredFile[],
+    fetchFiles: ()=> Promise<void>,
+    createFile: (file:Omit<IgnoredFile, "id">) => Promise<void>
+    deleteFile: (id: number) => Promise<void>
 }
 
-const useProjectsStore = create<ProjectsStore>()((set, get) => ({
-    projects:[],
-    fetchProjects: async () => set({projects: await getProjectsFromDb()}),
-    createProject: async (project) => {
-        await createProjectInDb(project);
-        await get().fetchProjects();
+const useIgnoredFilesStore = create<IgnoredFilesStore>()((set, get) => ({
+    files:[],
+    fetchFiles: async () => set({files: await getFilesFromDb()}),
+    createFile: async (file) => {
+        await createFileInDb(file);
+        await get().fetchFiles();
     },
-    deleteProject: async (id) => {
-        await deleteProjectFromDb(id);
-        await get().fetchProjects();
+    deleteFile: async (id) => {
+        await deleteFileFromDb(id);
+        await get().fetchFiles();
     }
 }));
 
-async function getProjectsFromDb() {
+async function getFilesFromDb() {
     const { startLoading, stopLoading, notifyError } = useAppStateStore.getState();
     try {
       startLoading();
       const db = await Database.load("sqlite:folder_publisher.db");
-      const dbProjects = await db.select<Project[]>("SELECT * FROM projects");
-      return dbProjects;
+      const dbFiles = await db.select<IgnoredFile[]>("SELECT * FROM ignoredFiles");
+      return dbFiles;
     } catch (error) {
       console.log(error);
       notifyError("Erro ao ler projetos");
@@ -39,15 +39,14 @@ async function getProjectsFromDb() {
     return [];
 }
     
-async function createProjectInDb(project: Omit<Project, "id">) {
+async function createFileInDb(file: Omit<IgnoredFile, "id">) {
     const { startLoading, stopLoading, notifyError } = useAppStateStore.getState();
     try {
         startLoading();
         const db = await Database.load("sqlite:folder_publisher.db");
-        await db.execute("INSERT INTO projects (name, filesFrom, filesTo) VALUES ($1, $2, $3)", [
-            project.name,
-            project.filesFrom,
-            project.filesTo
+        await db.execute("INSERT INTO ignoredFiles (name, projectId) VALUES ($1, $2)", [
+            file.name,
+            file.projectId
         ]);
     } catch (error) {
         console.log(error);
@@ -58,12 +57,12 @@ async function createProjectInDb(project: Omit<Project, "id">) {
     }
 }
 
-async function deleteProjectFromDb(id:number){
+async function deleteFileFromDb(id:number){
     const { startLoading, stopLoading, notifyError } = useAppStateStore.getState();
     try{
         startLoading();
         const db = await Database.load("sqlite:folder_publisher.db");
-        await db.execute("delete from projects where id = $1", [id]);
+        await db.execute("delete from ignoredFiles where id = $1", [id]);
     }
     catch (error){
         console.log(error);
@@ -74,4 +73,4 @@ async function deleteProjectFromDb(id:number){
     }
 }
 
-export default useProjectsStore
+export default useIgnoredFilesStore

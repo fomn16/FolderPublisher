@@ -1,5 +1,5 @@
 import { IoMdTrash, IoMdPlay } from "react-icons/io";
-import { MdAdd, MdCancel } from "react-icons/md";
+import { MdAdd, MdCancel, MdEdit } from "react-icons/md";
 
 import "./ProjectList.css";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import { useAppStateStore, useProjectsStore } from "../../stores";
 export default function ProjectList(){
 
     const { notifyError, isLoading, setActiveModal} = useAppStateStore()
+
     const { projects, deleteProject } = useProjectsStore();
     const [filter, setFilter] = useState<string>("");
     const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
@@ -85,6 +86,7 @@ export default function ProjectList(){
                   <div className="list-buttons">
                     <button className="icon-button list-button" onClick={() => deleteProject(project.id)}><IoMdTrash/></button>
                     <button className="icon-button list-button" onClick={() => copyTo(project.filesFrom, project.filesTo)}><IoMdPlay/></button>
+                    <button className="icon-button list-button" onClick={() => setActiveModal("EditProject", project.id)}><MdEdit/></button>
                   </div>
                 </td>
               </tr>
