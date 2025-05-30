@@ -1,20 +1,16 @@
 import { IoMdTrash, IoMdPlay } from "react-icons/io";
-import { MdAdd, MdCancel, MdEdit } from "react-icons/md";
+import { MdAdd, MdEdit } from "react-icons/md";
 
 import "./ProjectList.css";
-import { useEffect, useState } from "react";
-import InputWithButtons from "../../components/InputWithButtons";
-import levenshtein from 'js-levenshtein';
+import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 import { useAppStateStore, useProjectsStore } from "../../stores";
+import FilteredList from "../../components/FilteredList/FIlteredList";
 
 export default function ProjectList(){
-
     const { notifyError, isLoading, setActiveModal} = useAppStateStore()
-
     const { projects, deleteProject } = useProjectsStore();
-    const [filter, setFilter] = useState<string>("");
     const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
     const copyTo = async (src: string, dst: string) => {
@@ -28,24 +24,6 @@ export default function ProjectList(){
         notifyError('erro ao copiar arquivos')
       }
     }
-    
-    const onClearFilter = async () => {
-      setFilter("");
-    }
-
-    const applyFilter = async ()=>{
-      if(filter!==""){
-        setFilteredProjects(
-          [...projects]
-          .sort((a,b) => 
-            levenshtein(a.name, filter)-(levenshtein(b.name,filter))));
-      }
-      else{
-        setFilteredProjects([...projects]);
-      }
-    }
-
-    useEffect(()=>{ applyFilter() }, [filter, projects]);
 
     const processFilePath = (filePath:string) => {
       return filePath.replace(/[\/\\]/g, (match) => match + '\u200b');
@@ -55,17 +33,14 @@ export default function ProjectList(){
         <div>Carregando projetos...</div>
     ) : (
       <div className="collumns">
-          <InputWithButtons
-            id="projectsFilter"
-            value={filter}
-            setValue={setFilter}
-            placeholder="Buscar..."
-            buttons={[{
-              onClick:onClearFilter,
-              icon:MdCancel
-            },{
+          <FilteredList
+            items={projects}
+            setFilteredItems={setFilteredProjects}
+            extractKey={(project) => project.name}
+            id="projects"
+            extraButtons={[{
               onClick: () => setActiveModal("CreateProject"),
-              icon:MdAdd
+              icon: MdAdd
             }]}/>
         <table>
           <thead>

@@ -1,7 +1,7 @@
 import { Dispatch, RefObject } from "react"
 import { IconType } from "react-icons"
 
-interface ButtonInfo{
+export interface ButtonInfo{
     onClick?: () => void| Promise<void>
     icon: IconType
     ref?: RefObject<HTMLButtonElement>
