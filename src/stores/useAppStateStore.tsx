@@ -13,6 +13,7 @@ type AppStateStore = {
 
     activeModal: ActiveModal
     modalProps: any
+    modalStack: { modal:ActiveModal, props: any }[]
     setActiveModal: (modal: ActiveModal, props?: any) => void
     closeModal: () => void
 }
@@ -31,10 +32,22 @@ const useAppStateStore = create<AppStateStore>()((set, get) => ({
 
     notifyError: (message) => toast.error(message),
 
+    modalStack: [],
     activeModal: null,
     modalProps: undefined,
-    setActiveModal: (modal, props) => set({activeModal: modal, modalProps:props}),
-    closeModal: () => set({activeModal:null, modalProps:undefined})
+    setActiveModal: (modal, props) => {
+        const {activeModal, modalProps, modalStack} = get();
+        modalStack.push({modal:activeModal, props:modalProps})
+        set({activeModal: modal, modalProps:props, modalStack:modalStack});
+    },
+    closeModal: () =>{
+        const currStack = get().modalStack;
+        const popped = currStack.pop()
+        if(popped)
+            set({activeModal:popped.modal, modalProps:popped.props, modalStack:currStack});
+        else
+            set({activeModal:null, modalProps:undefined});
+    }
 }));
 
 export default useAppStateStore

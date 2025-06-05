@@ -1,46 +1,9 @@
-.list-button{
-  display: inline-flex;
+.sliding-div {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.1s ease-in-out;
 }
 
-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  border: 1px solid #ccc;
-}
-
-th,
-td {
-  padding: 8px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-
-td {
-  background-color: #f2f2f290;
-}
-
-/* Nome */
-td:nth-child(1),
-th:nth-child(1) {
-  width: 15%;
-}
-
-/* Ações */
-td:last-child,
-th:last-child {
-  width: 15%;
-  text-align: center;
-}
-
-td:last-child, th:last-child {
-  border-right: 1px solid #ddd;
+.sliding-div.visible {
+    max-height: 40px;
 }

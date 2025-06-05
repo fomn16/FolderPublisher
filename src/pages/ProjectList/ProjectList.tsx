@@ -1,5 +1,5 @@
 import { IoMdTrash, IoMdPlay } from "react-icons/io";
-import { MdAdd, MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 
 import "./ProjectList.css";
 import { useState } from "react";
@@ -7,6 +7,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 import { useAppStateStore, useProjectsStore } from "../../stores";
 import FilteredList from "../../components/FilteredList/FIlteredList";
+import { FaPlus } from "react-icons/fa";
 
 export default function ProjectList(){
     const { notifyError, isLoading, setActiveModal} = useAppStateStore()
@@ -15,7 +16,7 @@ export default function ProjectList(){
 
     const copyTo = async (src: string, dst: string) => {
       try {
-        await invoke('copy_directory', {
+        await invoke('execute_publish', {
           sourceDir: src,
           destinationDir: dst
         });
@@ -40,7 +41,7 @@ export default function ProjectList(){
             id="projects"
             extraButtons={[{
               onClick: () => setActiveModal("CreateProject"),
-              icon: MdAdd
+              icon: FaPlus
             }]}/>
         <table>
           <thead>
