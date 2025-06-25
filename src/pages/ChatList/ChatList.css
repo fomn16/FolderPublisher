@@ -31,5 +31,5 @@ ul{
 }
 
 .chatList li:not(.active):hover{
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(150, 150, 150, 0.15);
 }
