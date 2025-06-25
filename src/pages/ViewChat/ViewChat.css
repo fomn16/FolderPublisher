@@ -1,0 +1,43 @@
+.sliding-div {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.1s ease-in-out;
+}
+
+.sliding-div.visible {
+    max-height: 40px;
+}
+
+.innerChatSpace{
+    height: 100%;
+    flex-direction: column-reverse;
+}
+
+.userArea{
+    width: 100%;
+}
+
+.userArea input{
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.innerChatSpace ul{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.innerChatSpace li{
+    width: 60%;
+}
+
+.myMessage{
+    background: rgba(37, 99, 235, 0.6);
+    align-self:flex-end;
+}
+
+.someonesMessage{
+    background: rgba(0, 0, 0, 0.4);
+
+}

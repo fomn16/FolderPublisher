@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 
-export type ActiveModal = "CreateProject" | "EditProject" | null
+export type ActiveModal = "EditChat" | null
 
 type AppStateStore = {
     isLoading: boolean

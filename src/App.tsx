@@ -1,30 +1,37 @@
 import { useEffect } from "react";
 import { ToastContainer } from 'react-toastify';
 
-import ProjectForm from "./pages/ProjectForm";
-
 import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
-import ProjectList from "./pages/ProjectList/ProjectList";
-import AnimatedCard from "./components/AnimatedCard/AnimatedCard";
+import ChatList from "./pages/ChatList/ChatList"
 
-import { useProjectsStore } from "./stores";
-import EditProject from "./pages/EditProject/EditProject";
+import { useChatsStore } from "./stores";
+import ViewChat from "./pages/ViewChat/ViewChat";
+import { dataDir } from "@tauri-apps/api/path";
+
+async function findDatabasePath() {
+  const dataDirectory = await dataDir();
+  console.log("Database Path:", `${dataDirectory}example_app.db`);
+}
 
 function App() {
-  const { fetchProjects } = useProjectsStore();
+  const { fetchChats } = useChatsStore();
 
   useEffect(() =>{
-    fetchProjects();
+    fetchChats();
+    findDatabasePath();
   }, []);
 
   return (
     <main className="container">
       <ToastContainer/>
-      <div className="collumns">
-        <ProjectList/>
-        <AnimatedCard type="CreateProject"><ProjectForm/></AnimatedCard>
-        <AnimatedCard type="EditProject"><EditProject/></AnimatedCard>
+      <div className="chatSpace">
+        <div className="sidebar">
+          <ChatList/>
+        </div>
+        <div className="viewChat">
+          <ViewChat/>
+        </div>
       </div>
     </main>
   );

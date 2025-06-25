@@ -1,9 +1,0 @@
-.sliding-div {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.1s ease-in-out;
-}
-
-.sliding-div.visible {
-    max-height: 40px;
-}

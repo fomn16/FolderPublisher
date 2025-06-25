@@ -1,3 +1,4 @@
 export { default as useAppStateStore } from './useAppStateStore'
-export { default as useProjectsStore } from './useProjectsStore'
+export { default as useChatsStore } from './useChatsStore'
+export { default as useMessagesStore } from './useMessagesStore'
 export type { ActiveModal } from './useAppStateStore'

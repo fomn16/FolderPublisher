@@ -39,7 +39,7 @@ export default function FilteredList<T>(props: Props<T>){
             id={id + "Filter"}
             value={filter}
             setValue={setFilter}
-            placeholder="Buscar..."
+            placeholder="Search the chats"
             buttons={[{
               onClick:onClearFilter,
               icon:MdCancel

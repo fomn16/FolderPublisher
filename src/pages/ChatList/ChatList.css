@@ -1,0 +1,35 @@
+.list-button{
+  display: inline-flex;
+}
+
+/* Nome */
+td:nth-child(1),
+th:nth-child(1) {
+  width: 15%;
+}
+
+/* Ações */
+td:last-child,
+th:last-child {
+  width: 15%;
+  text-align: center;
+}
+
+td:last-child, th:last-child {
+  border-right: 1px solid #ddd;
+}
+
+ul{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.chatList li.active{
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.chatList li:not(.active):hover{
+  background-color: rgba(0, 0, 0, 0.15);
+}

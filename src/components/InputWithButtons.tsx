@@ -12,13 +12,24 @@ interface Props{
     value:string,
     setValue?: Dispatch<string>
     placeholder:string,
-    buttons: ButtonInfo[]
+    buttons: ButtonInfo[],
+    inverted?: boolean
 }
 
 export default function InputWithButtons(props:Props){
-    const {id, value, setValue, placeholder, buttons} = props
+    const {id, value, setValue, placeholder, buttons, inverted} = props
+    let style: React.CSSProperties = {
+        position: 'relative',
+        display: 'flex',
+        flexDirection:'column',
+        width: '100%',
+        marginBottom: '10px'
+    }
+    if(inverted){
+        style.flexDirection = 'column-reverse'
+    }
     return (
-        <div style={{ position: 'relative', display: 'inline-block', width: '100%'}}>
+        <div style={style}>
             <input
             id={id + "-input"}
             type="text"

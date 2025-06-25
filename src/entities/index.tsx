@@ -1,12 +1,11 @@
-type Project = {
+type Chat = {
   id: number;
   name: string;
-  filesFrom: string;
-  filesTo: string;
 }
 
-type IgnoredFile = {
+type Message = {
   id: number;
-  name: string;
-  projectId: number;
+  content: string;
+  chatId: number;
+  issuer: number;
 }
